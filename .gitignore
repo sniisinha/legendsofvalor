@@ -1,0 +1,6 @@
+# Build output
+bin/
+build/
+
+# Downloaded test dependencies
+lib/
