@@ -48,9 +48,8 @@ public class ValorCombat {
 
     // Range model: current tile + 4-neighborhood (orthogonal adjacency)
     private static final int[][] NEIGHBOR_OFFSETS = {
-            {-1, -1}, {-1, 0}, {-1, 1},
-            { 0, -1},          { 0, 1},
-            { 1, -1}, { 1, 0}, { 1, 1}
+            {0, 0},
+            {-1, 0}, {1, 0}, {0, -1}, {0, 1}
     };
 
     public ValorCombat(ValorBoard board, GameStats gameStats) {
@@ -143,7 +142,7 @@ public class ValorCombat {
         }
 
         double before = monster.getHP();
-        int dmg = calculateHeroAttackDamage(hero);
+        int dmg = calculateHeroAttackDamage(hero, monster);
 
         // Track contribution to damage dealt for post-game stats
         HeroStats hs = safeHeroStats(hero);
@@ -230,10 +229,11 @@ public class ValorCombat {
         }
 
         double before = target.getHP();
-        int dmg = calculateSpellDamage(hero, spell);
 
-        // Apply spell-specific debuff effect before damage is logged/applied
+        // Apply spell-specific debuff effect before damage is calculated/applied
         applySpellEffect(spell, target);
+
+        int dmg = calculateSpellDamage(hero, spell, target);
 
         HeroStats hs = safeHeroStats(hero);
         if (hs != null) hs.addDamageDealt(dmg);
@@ -268,10 +268,10 @@ public class ValorCombat {
     }
 
     /**
-     * Computes hero basic-attack damage using the hero's attack value.
+     * Computes hero basic-attack damage using the hero's attack value and the target's defense.
      */
-    private int calculateHeroAttackDamage(Hero hero) {
-        return (int) Math.round(hero.getAttackDamage());
+    private int calculateHeroAttackDamage(Hero hero, Monster target) {
+        return (int) Math.round(target.reduceByDefense(hero.getAttackDamage()));
     }
 
     /**
@@ -282,12 +282,12 @@ public class ValorCombat {
     }
 
     /**
-     * Computes spell damage using base spell damage and dexterity scaling.
+     * Computes spell damage using base spell damage, dexterity scaling, and the target's defense.
      */
-    private int calculateSpellDamage(Hero hero, Spell spell) {
+    private int calculateSpellDamage(Hero hero, Spell spell, Monster target) {
         double base = spell.getDamage();
         double raw = base + (hero.getDexterity() / DEX_SPELL_SCALE_DIVISOR) * base;
-        return (int) Math.round(raw);
+        return (int) Math.round(target.reduceByDefense(raw));
     }
 
     /**
@@ -376,7 +376,11 @@ public class ValorCombat {
     private void removeHeroFromBoard(Hero hero) {
         int[] pos = findHero(hero);
         if (pos == null) return;
-        board.getTile(pos[0], pos[1]).removeHero();
+
+        // Leaving the tile must revert any terrain bonus the hero was holding
+        ValorTile tile = board.getTile(pos[0], pos[1]);
+        tile.onExit(hero);
+        tile.removeHero();
     }
 
     /**

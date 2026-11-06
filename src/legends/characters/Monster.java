@@ -9,6 +9,9 @@ package legends.characters;
 
 public abstract class Monster extends Entity {
 
+    // Defense value at which incoming damage is halved
+    private static final double DEFENSE_SCALE = 1000.0;
+
     // Monster attributes
     protected double damage;
     protected double defense;
@@ -30,6 +33,14 @@ public abstract class Monster extends Entity {
      */
     public void takeDamage(double amount) {
         hp = Math.max(0, hp - amount);
+    }
+
+    /**
+     * Returns the damage that gets through this monster's defense.
+     * Higher defense blocks a larger share, but some damage always lands.
+     */
+    public double reduceByDefense(double rawDamage) {
+        return rawDamage * DEFENSE_SCALE / (DEFENSE_SCALE + defense);
     }
 
     /**

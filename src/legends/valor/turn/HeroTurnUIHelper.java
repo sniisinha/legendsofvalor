@@ -164,7 +164,7 @@ public class HeroTurnUIHelper {
     public List<Spell> getSpells(Inventory inv) {
         List<Spell> out = new ArrayList<>();
         if (inv == null) return out;
-        for (Item it : inv.getItems()) if (it instanceof Spell s) out.add(s);
+        for (Item it : inv.getItems()) if (it instanceof Spell) out.add((Spell) it);
         return out;
     }
 
@@ -174,7 +174,7 @@ public class HeroTurnUIHelper {
     public List<Potion> getPotions(Inventory inv) {
         List<Potion> out = new ArrayList<>();
         if (inv == null) return out;
-        for (Item it : inv.getItems()) if (it instanceof Potion p) out.add(p);
+        for (Item it : inv.getItems()) if (it instanceof Potion) out.add((Potion) it);
         return out;
     }
 
@@ -184,7 +184,7 @@ public class HeroTurnUIHelper {
     public List<Weapon> getWeapons(Inventory inv) {
         List<Weapon> out = new ArrayList<>();
         if (inv == null) return out;
-        for (Item it : inv.getItems()) if (it instanceof Weapon w) out.add(w);
+        for (Item it : inv.getItems()) if (it instanceof Weapon) out.add((Weapon) it);
         return out;
     }
 
@@ -194,7 +194,7 @@ public class HeroTurnUIHelper {
     public List<Armor> getArmors(Inventory inv) {
         List<Armor> out = new ArrayList<>();
         if (inv == null) return out;
-        for (Item it : inv.getItems()) if (it instanceof Armor a) out.add(a);
+        for (Item it : inv.getItems()) if (it instanceof Armor) out.add((Armor) it);
         return out;
     }
 }

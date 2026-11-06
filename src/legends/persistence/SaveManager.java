@@ -91,6 +91,12 @@ public class SaveManager {
                 new BufferedInputStream(new FileInputStream(lastGameFile.toFile()))
         )) {
             Object obj = in.readObject();
+
+            // A readable file can still hold something other than a saved game
+            if (!(obj instanceof GameRecord)) {
+                System.out.println("[SaveManager] LOAD FAILED: Save file does not contain a game record.");
+                return null;
+            }
             return (GameRecord) obj;
         } catch (ClassNotFoundException e) {
             // Triggered if class definitions changed between save/load

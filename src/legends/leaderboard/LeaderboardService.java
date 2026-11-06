@@ -20,6 +20,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -69,8 +70,7 @@ public class LeaderboardService {
         Comparator<LeaderboardEntry> cmp =
                 Comparator.comparingInt((LeaderboardEntry e) -> e.score).reversed()
                         .thenComparing((LeaderboardEntry e) -> e.endedAt,
-                                Comparator.nullsLast(Comparator.<Comparable>naturalOrder()))
-                        .reversed();
+                                Comparator.nullsLast(Comparator.<LocalDateTime>reverseOrder()));
 
         entries.sort(cmp);
 
@@ -88,8 +88,7 @@ public class LeaderboardService {
         // Sort by end time (newest first), nulls last
         entries.sort(
                 Comparator.comparing((LeaderboardEntry e) -> e.endedAt,
-                        Comparator.nullsLast(Comparator.<Comparable>naturalOrder()))
-                        .reversed()
+                        Comparator.nullsLast(Comparator.<LocalDateTime>reverseOrder()))
         );
 
         return sliceCopy(entries, n);

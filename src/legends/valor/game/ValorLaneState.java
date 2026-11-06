@@ -125,13 +125,13 @@ public class ValorLaneState implements ValorState {
      * Maps a movement command to a direction and delegates execution to ValorMovement.
      */
     private boolean handleHeroMovement(Hero hero, char cmd) {
-        return switch (cmd) {
-            case 'W' -> movement.moveHero(hero, ValorDirection.NORTH);
-            case 'S' -> movement.moveHero(hero, ValorDirection.SOUTH);
-            case 'A' -> movement.moveHero(hero, ValorDirection.WEST);
-            case 'D' -> movement.moveHero(hero, ValorDirection.EAST);
-            default -> false;
-        };
+        switch (cmd) {
+            case 'W': return movement.moveHero(hero, ValorDirection.NORTH);
+            case 'S': return movement.moveHero(hero, ValorDirection.SOUTH);
+            case 'A': return movement.moveHero(hero, ValorDirection.WEST);
+            case 'D': return movement.moveHero(hero, ValorDirection.EAST);
+            default:  return false;
+        }
     }
 
     /**

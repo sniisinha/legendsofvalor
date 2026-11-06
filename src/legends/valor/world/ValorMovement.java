@@ -158,7 +158,7 @@ public class ValorMovement {
     }
 
     /**
-     * Finds the closest monster "ahead" of a hero within a lane (toward the enemy nexus).
+     * Finds the closest monster level with or "ahead" of a hero within a lane (toward the enemy nexus).
      * Returns Integer.MIN_VALUE when no blocking monster exists.
      */
     private int closestBlockingMonsterRow(int referenceRow, int lane) {
@@ -171,7 +171,7 @@ public class ValorMovement {
                 Monster m = board.getTile(r, c).getMonster();
                 if (!isAlive(m)) continue;
 
-                if (r < referenceRow) {
+                if (r <= referenceRow) {
                     best = Math.max(best, r);
                 }
             }
@@ -192,7 +192,7 @@ public class ValorMovement {
     }
 
     /**
-     * Finds the closest hero "ahead" of a monster within a lane (toward the heroes' nexus).
+     * Finds the closest hero level with or "ahead" of a monster within a lane (toward the heroes' nexus).
      * Returns Integer.MAX_VALUE when no blocking hero exists.
      */
     private int closestBlockingHeroRow(int referenceRow, int lane) {
@@ -205,7 +205,7 @@ public class ValorMovement {
                 Hero h = board.getTile(r, c).getHero();
                 if (!isAlive(h)) continue;
 
-                if (r > referenceRow) {
+                if (r >= referenceRow) {
                     best = Math.min(best, r);
                 }
             }

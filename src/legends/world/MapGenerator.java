@@ -34,8 +34,8 @@ public class MapGenerator {
                 // Random number 0–99 to determine tile type
                 int r = rand.nextInt(100);
 
-                if (r < 10) {
-                    // 10% of tiles are inaccessible ("X")
+                if (r < 20) {
+                    // 20% of tiles are inaccessible ("X")
                     map.setTile(i, j, new InaccessibleTile());
                 }
                 else if (r < 35) {

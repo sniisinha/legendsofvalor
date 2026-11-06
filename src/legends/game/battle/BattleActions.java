@@ -72,7 +72,7 @@ public class BattleActions {
 
         // Damage calculation is delegated to Hero (encapsulation of hero stats/equipment).
         double raw = hero.getAttackDamage();
-        int dmg = (int) Math.round(raw);
+        int dmg = (int) Math.round(monster.reduceByDefense(raw));
 
         // Apply damage through Monster API (encapsulation of HP rules).
         monster.takeDamage(dmg);
@@ -118,13 +118,13 @@ public class BattleActions {
             return true;
         }
 
-        // Spell damage scales with hero dexterity (business rule).
+        // Apply spell-specific side effects (debuffs) before damage is calculated.
+        applySpellEffect(spell, monster);
+
+        // Spell damage scales with hero dexterity and is reduced by defense (business rule).
         double base = spell.getDamage();
         double raw = base + (hero.getDexterity() / 10000.0) * base;
-        int dmg = (int) Math.round(raw);
-
-        // Apply spell-specific side effects (debuffs) before damage is applied.
-        applySpellEffect(spell, monster);
+        int dmg = (int) Math.round(monster.reduceByDefense(raw));
 
         monster.takeDamage(dmg);
 
