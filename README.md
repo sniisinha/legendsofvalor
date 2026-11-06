@@ -314,6 +314,18 @@ Assuming your project root is the directory that contains the `legends/` folder 
    ```
 <br>
 
+## Running the Tests
+
+The JUnit 5 tests live in `test/` and mirror the source packages. Run them from a terminal:
+
+```
+./run-tests.sh
+```
+
+The script downloads the JUnit console jar into `lib/` on first run, compiles the game and tests into `build/`, and runs everything. It needs Java 8 or newer and `curl`.
+
+<br>
+
 # I/O Example
 
 ```
@@ -635,6 +647,7 @@ Enter command: W
   - Wide range of actions: attacks, spells, potions, equipment changes
   - Dodge mechanics and spell-type debuffs  
     (Fire lowers DEF, Ice lowers DMG, Lightning lowers Dodge)
+  - Monster defense reduces hero attack and spell damage: `damage × 1000 / (1000 + defense)`
 
 - **Market & Inventory System**
   - Buy/sell weapons, armor, spells, and potions
